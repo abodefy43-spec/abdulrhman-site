@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Abdulrhman — ML & Systems Engineer</title>
+<meta name="description" content="Abdulrhman — ML & systems engineer. Recommendation, forecasting and computer vision in production, and a C++ chess engine that plays live on Lichess." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<div class="page">
+
+  <!-- masthead bar -->
+  <header class="masthead reveal">
+    <span>ABDULRHMAN</span>
+    <span>PORTFOLIO — EDITION 2026</span>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="hero-main">
+      <h1 class="name reveal">Abdulrhman</h1>
+      <p class="role reveal">Machine learning &amp; systems engineer</p>
+      <p class="lede reveal">I build <span class="accent">real-time ML and backend systems</span> and take them to production — recommendation, computer vision, and live audio. Day job at a q-commerce grocery platform.</p>
+
+      <div class="term-block reveal">
+        <div class="term-cap">~/abdulrhman — try <code>help</code></div>
+        <div class="term-window" id="term-window">
+          <div class="term-chrome"><span></span><span></span><span></span></div>
+          <div class="term" id="term" tabindex="0">
+            <div id="output"></div>
+            <div class="inputline" id="inputline">
+              <span class="ps1">$</span>
+              <span class="cmd-wrap"><span id="typed"></span><span class="caret" id="caret"></span><span id="ghost"></span></span>
+              <input id="hidden" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="terminal input" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="colophon reveal reveal--left">
+      <dl>
+        <dt>Currently</dt><dd>ML Engineer @ QEU</dd>
+        <dt>Focus</dt><dd>real-time ML, systems</dd>
+        <dt>Based in</dt><dd>Jeddah, KSA</dd>
+        <dt>Index</dt><dd><a href="#about">01 About</a> · <a href="#work">02 Work</a> · <a href="#contact">03 Contact</a></dd>
+      </dl>
+      <div class="links">
+        <a href="https://github.com/abodefy43-spec" target="_blank" rel="noopener" class="link">GitHub</a>
+        <a href="https://lichess.org/@/Akera_bot" target="_blank" rel="noopener" class="link">Lichess</a>
+        <a href="mailto:abodefy43@gmail.com" class="link">Email</a>
+      </div>
+    </aside>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="sec" id="about">
+    <div class="sec-head reveal"><span class="ghost-no">01</span><span class="sec-label">About</span></div>
+    <div class="prose reveal">
+      <p>I'm an ML engineer. I work on machine-learning and backend systems and take them all the way to production — recommendation, forecasting, computer vision, and real-time audio. Day job is at <strong>QEU</strong>, a q-commerce grocery platform; the rest I build because I like building.</p>
+      <p>I care about honest numbers over flattering ones, and about getting the architecture right so things hold up once they leave my screen.</p>
+      <div class="skills" id="skills"></div>
+    </div>
+  </section>
+
+  <!-- FEATURED project -->
+  <section class="sec" id="featured">
+    <div class="sec-head reveal"><span class="ghost-no">02</span><span class="sec-label">Featured</span></div>
+    <div class="feature reveal" id="feature"></div>
+  </section>
+
+  <!-- WORK index -->
+  <section class="sec" id="work">
+    <div class="sec-head reveal"><span class="ghost-no">03</span><span class="sec-label">Work &amp; experience</span></div>
+    <div class="xp reveal" id="xp"></div>
+    <ol class="index" id="index"></ol>
+  </section>
+
+  <!-- PLAY: chess -->
+  <section class="sec" id="play">
+    <div class="sec-head reveal"><span class="ghost-no">04</span><span class="sec-label">Play me</span></div>
+    <p class="prose reveal">I wrote a chess engine in C++. Here's a quick game in the browser — full rules, you're white. The real engine plays stronger on <a href="https://lichess.org/@/Akera_bot" target="_blank" rel="noopener" class="link">Lichess</a>.</p>
+    <div class="chess-panel reveal" id="chess-mount"></div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="sec" id="contact">
+    <div class="sec-head reveal"><span class="ghost-no">05</span><span class="sec-label">Contact</span></div>
+    <p class="contact-line reveal">Open to roles, freelance, and interesting problems.
+      <a href="mailto:abodefy43@gmail.com" class="link accent" id="mail-magnet">abodefy43@gmail.com</a></p>
+    <div class="contact-links reveal">
+      <a href="https://github.com/abodefy43-spec" target="_blank" rel="noopener" class="link">GitHub ↗</a>
+      <a href="https://lichess.org/@/Akera_bot" target="_blank" rel="noopener" class="link">Lichess ↗</a>
+    </div>
+  </section>
+
+  <footer class="colofoot">BUILT BY HAND — 2026 · NO TEMPLATE</footer>
+
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/chessgame.js"></script>
+<script src="js/main.js"></script>
+<script src="js/term.js"></script>
+</body>
+</html>
