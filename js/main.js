@@ -1,120 +1,135 @@
+/* PREVIEW STUB + MOTION — renders content and drives the entrance choreography.
+   (Render bits are stubs; the motion block is the real redesign behavior.) */
 (function () {
-  const D = window.DATA;
-  const esc = (s) => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-  const reduce = matchMedia("(prefers-reduced-motion:reduce)").matches;
-  const finePointer = matchMedia("(hover:hover) and (pointer:fine)").matches;
+  var D = window.DATA || {};
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var small = matchMedia("(max-width: 760px)").matches;
 
-  // ---- skills ----
-  const sk = document.getElementById("skills");
-  if (sk) sk.innerHTML =
-    `<div class="row"><span class="lab">What I build</span><span class="val">${esc((D.skillsBuild||[]).join("  ·  "))}</span></div>` +
-    `<div class="row"><span class="lab">Languages</span><span class="val">${esc(D.skillsCore.join("  ·  "))}</span></div>` +
-    `<div class="row"><span class="lab">Comfortable in</span><span class="val dim">${esc(D.skillsComfortable.join("  ·  "))}</span></div>` +
-    `<p class="note">Once you've shipped a C++ engine and a gRPC service, a new language is a weekend, not a wall.</p>`;
+  /* ---------- render content ---------- */
+  var skills = document.getElementById("skills");
+  if (skills && D.skills) {
+    skills.innerHTML = D.skills.map(function (s) {
+      return '<div class="row"><span class="lab">' + s.lab + '</span><span class="val' +
+        (s.dim ? ' dim' : '') + '">' + s.val + '</span></div>';
+    }).join("");
+  }
 
-  // ---- experience ----
-  const xp = document.getElementById("xp");
-  if (xp) {
-    const e = D.experience;
+  var fc = document.getElementById("feat-copy");
+  if (fc && D.featured) {
+    var f = D.featured;
+    fc.innerHTML =
+      '<div class="feat-proof">Live demo · <b>real-time</b></div>' +
+      '<h3 class="feat-title">' + f.title + '</h3>' +
+      '<p class="feat-desc">' + f.desc + '</p>' +
+      '<div class="feat-tags">' + f.tags.map(function (t) { return '<span>' + t + '</span>'; }).join("") + '</div>' +
+      '<div class="feat-links">' + f.links.map(function (l) { return '<a class="link" href="' + l[1] + '">' + l[0] + '</a>'; }).join("") + '</div>' +
+      '<p class="feat-run">' + f.run + '</p>';
+  }
+
+  var xp = document.getElementById("xp");
+  if (xp && D.experience) {
+    var e = D.experience;
     xp.innerHTML =
-      `<div class="xp-top"><div class="xp-role">${esc(e.role)} · <span class="org">${esc(e.org)}</span></div>
-        <div class="xp-when">${esc(e.when)}</div></div>
-       <div class="xp-note">${esc(e.orgNote)}</div>
-       <div class="xp-body"><p>${esc(e.body)}</p>
-         <ul>${e.points.map((p)=>`<li>${esc(p)}</li>`).join("")}</ul>
-         <div class="xp-tags">${e.tags.map((t)=>`<span>${esc(t)}</span>`).join("")}</div>
-       </div>`;
+      '<div class="xp-top"><span class="xp-role">' + e.role + (e.org ? ' <span class="org">@ ' + e.org + '</span>' : '') + '</span>' +
+      '<span class="xp-when">' + e.when + '</span></div>' +
+      '<div class="xp-note">' + e.note + '</div>' +
+      '<div class="xp-body"><ul>' + e.points.map(function (p) { return '<li>' + p + '</li>'; }).join("") + '</ul></div>' +
+      '<div class="xp-tags">' + e.tags.map(function (t) { return '<span>' + t + '</span>'; }).join("") + '</div>';
   }
 
-  // ---- featured project (audio censor) ----
-  const feat = document.getElementById("feature");
-  if (feat) {
-    const f = D.featured;
-    feat.innerHTML = `
-      <div>
-        <div class="feat-proof"><b>${esc(f.proof)}</b></div>
-        <h3 class="feat-title">${esc(f.name)}</h3>
-        <p class="feat-desc">${esc(f.desc)}</p>
-        <div class="feat-tags">${f.tags.map((t)=>`<span>${esc(t)}</span>`).join("")}</div>
-        <div class="feat-links">
-          <a class="link" href="${f.repo}" target="_blank" rel="noopener">Source ↗</a>
-          <a class="link accent" href="http://localhost:8000" target="_blank" rel="noopener">Live mic demo ↗</a>
-        </div>
-        <p class="feat-run">Run it on your mic: start the local server, then open <code>localhost:8000</code> and talk.</p>
-      </div>
-      <div class="feat-visual" aria-hidden="true">
-        <div class="wave"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-        <div class="wave-label">speech&nbsp;→&nbsp;<span class="accent">[ beep ]</span>&nbsp;→&nbsp;out</div>
-      </div>`;
+  var index = document.getElementById("index");
+  if (index && D.projects) {
+    index.innerHTML = D.projects.map(function (p, i) {
+      return '<li class="card" style="--i:' + i + '"><a href="' + (p.href || "#") + '" target="_blank" rel="noopener">' +
+        '<div class="card-top"><span class="no">' + p.no + '</span><span class="arr">\u2197</span></div>' +
+        '<span class="ttl">' + p.ttl + '</span>' +
+        '<span class="role">' + p.role + '</span>' +
+        '<p class="desc">' + p.desc + '</p>' +
+        '<div class="tags">' + p.tags.map(function (t) { return '<span>' + t + '</span>'; }).join("") + '</div>' +
+        '</a></li>';
+    }).join("");
   }
 
-  // ---- chess play panel (its own small interactive feature) ----
-  const chessMount = document.getElementById("chess-mount");
-  if (chessMount) {
-    let started = false;
-    const startBoard = () => {
-      if (started || !window.ChessGame) return; started = true;
-      window.ChessGame.mount(chessMount, { skill: 6, lichess: D.lichess }).then((ctrl) => {
-        window.__resetFeatureBoard = () => ctrl && ctrl.reset();
-      });
-    };
-    window.__focusFeatureBoard = () => {
-      const sec = document.getElementById("play");
-      if (sec) sec.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
-      startBoard();
-    };
-    const bio = new IntersectionObserver((en) => { en.forEach((x) => { if (x.isIntersecting) { startBoard(); bio.disconnect(); } }); }, { threshold: .25 });
-    bio.observe(chessMount);
-  }
-
-  // ---- project index ----
-  const idx = document.getElementById("index");
-  if (idx) {
-    idx.innerHTML = D.projects.map((p, i) => `
-      <li><a href="${p.repo}" target="_blank" rel="noopener">
-        <span class="no">0${i + 2}</span>
-        <span class="meta">
-          <span class="ttl">${esc(p.name)} <span class="arr">↗</span></span>
-          <span class="role">${esc(p.role)}</span>
-          <span class="desc">${esc(p.desc)}</span>
-        </span>
-        <span class="tags">${p.tags.join(" · ")}</span>
-      </a></li>`).join("");
-  }
-
-
-  // ---- scroll reveal w/ stagger ----
-  const reveals = Array.from(document.querySelectorAll(".reveal"));
-  if (reduce) { reveals.forEach((el) => el.classList.add("is-visible")); }
-  else {
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((en) => {
+  /* ---------- entrance choreography: reveal on scroll ---------- */
+  var targets = [].slice.call(document.querySelectorAll("[data-anim], .index .card"));
+  if (reduce || !("IntersectionObserver" in window)) {
+    targets.forEach(function (t) { t.classList.add("in"); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
         if (en.isIntersecting) {
-          const sibs = Array.from(en.target.parentElement.children).filter((c)=>c.classList.contains("reveal"));
-          const pos = sibs.indexOf(en.target);
-          en.target.style.transitionDelay = Math.min(pos, 5) * 70 + "ms";
-          en.target.classList.add("is-visible");
+          en.target.classList.add("in");
+          if (en.target.hasAttribute("data-decode")) runDecode(en.target);
           io.unobserve(en.target);
         }
       });
-    }, { rootMargin: "0px 0px -10% 0px" });
-    reveals.forEach((el) => io.observe(el));
+    }, { threshold: 0.18, rootMargin: "0px 0px -8% 0px" });
+    targets.forEach(function (t) { io.observe(t); });
   }
 
-  // ---- one magnetic element: the contact email ----
-  const mag = document.getElementById("mail-magnet");
-  if (mag && finePointer && !reduce) {
-    mag.addEventListener("mousemove", (e) => {
-      const r = mag.getBoundingClientRect();
-      const x = (e.clientX - (r.left + r.width/2)) * 0.3;
-      const y = (e.clientY - (r.top + r.height/2)) * 0.3;
-      mag.style.transform = `translate(${Math.max(-10,Math.min(10,x))}px,${Math.max(-10,Math.min(10,y))}px)`;
+  /* ---------- pointer-tilt on project cards (transform stays on the card link only) ---------- */
+  if (!reduce && !small) {
+    document.querySelectorAll(".index .card a").forEach(function (a) {
+      var card = a.parentElement;
+      a.addEventListener("pointermove", function (ev) {
+        if (!card.classList.contains("in")) return;
+        var r = a.getBoundingClientRect();
+        var px = (ev.clientX - r.left) / r.width - 0.5;
+        var py = (ev.clientY - r.top) / r.height - 0.5;
+        a.style.transform = "rotateY(" + (px * 7).toFixed(2) + "deg) rotateX(" + (-py * 7).toFixed(2) + "deg) translateZ(6px)";
+      });
+      a.addEventListener("pointerleave", function () { a.style.transform = ""; });
     });
-    mag.addEventListener("mouseleave", () => {
-      mag.style.transition = "transform .35s var(--ease,cubic-bezier(.22,1,.36,1))";
-      mag.style.transform = "translate(0,0)";
-      setTimeout(() => (mag.style.transition = ""), 350);
+  }
+
+  /* ---------- redaction -> decode email (ties to the censor theme) ---------- */
+  function runDecode(el) {
+    var full = el.getAttribute("data-decode") || el.textContent;
+    if (reduce) { el.textContent = full; return; }
+    var blocks = "\u2588\u2593\u2592\u2591@#%&$".split("");
+    var frame = 0, total = full.length;
+    el.classList.add("decoding");
+    var timer = setInterval(function () {
+      frame++;
+      var revealed = Math.floor(frame / 3);
+      var out = "";
+      for (var i = 0; i < total; i++) {
+        if (full[i] === "@" || full[i] === ".") { out += full[i]; continue; }
+        out += i < revealed ? full[i] : blocks[(Math.random() * blocks.length) | 0];
+      }
+      el.textContent = out;
+      if (revealed >= total) { el.textContent = full; el.classList.remove("decoding"); clearInterval(timer); }
+    }, 38);
+  }
+
+  /* ---------- magnetic email ---------- */
+  var mail = document.getElementById("mail-magnet");
+  if (mail && !reduce && !small) {
+    mail.addEventListener("pointermove", function (ev) {
+      var r = mail.getBoundingClientRect();
+      var x = ev.clientX - (r.left + r.width / 2), y = ev.clientY - (r.top + r.height / 2);
+      mail.style.transform = "translate(" + (x * 0.12).toFixed(1) + "px," + (y * 0.18).toFixed(1) + "px)";
     });
-    mag.addEventListener("mouseenter", () => (mag.style.transition = ""));
+    mail.addEventListener("pointerleave", function () { mail.style.transform = ""; });
+  }
+
+  /* ---------- mount the real chess board (lazily, when #play scrolls in) ---------- */
+  var chessMount = document.getElementById("chess-mount");
+  if (chessMount && window.ChessGame) {
+    var started = false;
+    var startBoard = function () {
+      if (started) return; started = true;
+      window.ChessGame.mount(chessMount, { skill: 6, lichess: (D.lichess || "https://lichess.org/@/Akera_bot") })
+        .then(function (ctrl) { window.__resetFeatureBoard = function () { ctrl && ctrl.reset(); }; });
+    };
+    window.__focusFeatureBoard = function () {
+      var sec = document.getElementById("play");
+      if (sec) sec.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+      startBoard();
+    };
+    var cio = new IntersectionObserver(function (en) {
+      en.forEach(function (x) { if (x.isIntersecting) { startBoard(); cio.disconnect(); } });
+    }, { threshold: 0.2 });
+    cio.observe(chessMount);
   }
 })();

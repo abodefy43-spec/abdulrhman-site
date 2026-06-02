@@ -1,65 +1,40 @@
 window.DATA = {
   name: "Abdulrhman",
-  location: "Jeddah, KSA",
   email: "abodefy43@gmail.com",
   github: "https://github.com/abodefy43-spec",
-  githubHandle: "abodefy43-spec",
   lichess: "https://lichess.org/@/Akera_bot",
-  lichessHandle: "Akera_bot",
 
-  skillsBuild: ["Real-time ML", "Recommendation systems", "Computer vision", "Mobile apps", "Backend services", "Multithreading"],
-  skillsCore: ["Python", "C++20", "Dart", "Kotlin", "PyTorch", "gRPC", "Docker", "CUDA", "Git"],
-  skillsComfortable: ["Rust", "TypeScript", "SQL", "Bash", "C", "Linux"],
+  featured: {
+    title: "Real-Time Audio Censor",
+    desc: "Real-time speech moderation. It catches flagged words the moment they're spoken and removes them before they reach the listener — clean audio out, on the fly. Built on a production speech engine to stay accurate on live, messy audio.",
+    tags: ["Python", "Real-time ASR", "Audio"],
+    links: [["Source", "https://github.com/abodefy43-spec/audio-censor"]],
+    run: "Runs the real speech engine live — record a clip and hear it cleaned."
+  },
 
   experience: {
     role: "Machine Learning Engineer",
     org: "QEU",
-    orgNote: "q-commerce grocery · Jeddah",
-    when: "2025 — Now",
-    body: "I work on the ML and backend systems behind QEU's recommendations, forecasting, and warehouse monitoring — picking and tuning the right models inside architectures that hold up in production.",
+    when: "2025 — present",
+    note: "q-commerce platform · Jeddah, KSA",
     points: [
-      "A gRPC recommendation engine that serves personalized product bundles: an offline picker precomputes them, an in-memory server answers requests fast, and live out-of-stock updates patch the results. Deployed on GCP Cloud Run.",
-      "Per-SKU, per-warehouse demand forecasting that learns each store's own demand patterns and applies them only where the data supports it, with a walk-forward cross-validation harness for honest accuracy.",
-      "A warehouse computer-vision pipeline: a detection cascade plus a verifier to cut false positives, with a vision-language model ensemble for labeling, running on rented GPU with cost-control auto-stop.",
+      "Built the recommendation system that personalizes what customers see across the platform — serving tailored product bundles in real time, kept in sync with live inventory.",
+      "Built the demand-forecasting system that drives inventory planning across stores, so the right stock is in the right place — validated to be accurate enough for the business to plan against.",
+      "Built a computer-vision system for warehouse operations that turns camera feeds into structured signals, running efficiently at scale."
     ],
-    tags: ["Python", "gRPC", "PyTorch", "GCP", "Docker"],
-  },
-
-  // FEATURED: audio censor
-  featured: {
-    id: "censor",
-    name: "Real-Time Audio Censor",
-    proof: "Python · real-time speech",
-    desc: "Listens to live audio, catches banned words, and replaces them with a beep through a short delay buffer — so the word is censored before it's heard. It reconstructs whole words from the speech model's subword tokens (matching the raw tokens misfires), and runs the detection on a separate thread, gated by voice activity, so the audio never stutters.",
-    tags: ["Python", "Whisper / Parakeet", "Silero VAD", "ONNX"],
-    repo: "https://github.com/abodefy43-spec/audio-censor",
-    live: null,
+    tags: ["Recommendation", "Forecasting", "Computer Vision", "Backend", "Cloud"]
   },
 
   projects: [
-    {
-      id: "recsys",
-      name: "Q Bundle Recommender",
-      role: "gRPC recommendation engine",
-      desc: "Personalized product bundles for a grocery app — precomputed by an offline picker and served from memory by a gRPC API, with live out-of-stock patching. Deployed on GCP Cloud Run.",
-      tags: ["Python", "gRPC", "GCP"],
-      repo: "https://github.com/abodefy43-spec/bundling-system",
-    },
-    {
-      id: "ar",
-      name: "dar_nakheel",
-      role: "mobile AR — place furniture in your room",
-      desc: "A Flutter app with a native Kotlin ARCore layer: place multiple pieces in your real room at once, rotate them with an on-screen ring, take snapshots, and configure them with live-preview theming.",
-      tags: ["Flutter", "Kotlin", "ARCore"],
-      repo: "https://github.com/abodefy43-spec/dar-nakheel",
-    },
-    {
-      id: "ripper",
-      name: "Ripper — chess engine",
-      role: "C++20 · plays on Lichess",
-      desc: "A chess engine in C++20 with no dependencies — bitboard move generation, multi-threaded search, an opening book and UCI support. It plays online as @Akera_bot at roughly 2000–2200 Elo. You can play a quick game further up the page.",
-      tags: ["C++20", "multithreading", "UCI"],
-      repo: "https://github.com/abodefy43-spec/chess",
-    },
+    { no: "01", ttl: "Recommendation Engine", role: "personalization at scale", desc: "Powers what customers see across a live q-commerce platform — personalized product bundles served in real time and kept in sync with live inventory.", tags: ["Python", "Recommendation", "Cloud"], href: "https://github.com/abodefy43-spec/bundling-system" },
+    { no: "02", ttl: "dar_nakheel", role: "cross-platform mobile AR", desc: "An augmented-reality app that lets you place and arrange furniture in your real room from your phone — built cross-platform with a native AR layer.", tags: ["Flutter", "Dart", "ARCore"], href: "https://github.com/abodefy43-spec/dar-nakheel" },
+    { no: "03", ttl: "Ripper", role: "C++ chess engine, from scratch", desc: "A chess engine built from scratch in C++ that competes online on Lichess around 2000–2200. Play a game against it below.", tags: ["C++", "Engine"], href: "https://github.com/abodefy43-spec/chess" }
   ],
+
+  skills: [
+    { lab: "What I build", val: "Production machine-learning systems end to end — recommendation & ranking, demand forecasting, computer vision, real-time audio — plus the backend services that serve them.", dim: false },
+    { lab: "Languages", val: "Python · C++ · Dart · Kotlin · Go · TypeScript / JavaScript · Rust · SQL · HTML / CSS", dim: false },
+    { lab: "Frameworks", val: "PyTorch · Flutter · React · FastAPI / gRPC · ONNX", dim: false },
+    { lab: "Infrastructure", val: "Docker · Google Cloud · CUDA / GPU · Linux · Git", dim: true }
+  ]
 };

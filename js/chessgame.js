@@ -6,6 +6,11 @@
   const GLYPH = { p:"♟", r:"♜", n:"♞", b:"♝", q:"♛", k:"♚" };
   const CHESSJS = "https://cdn.jsdelivr.net/npm/chess.js@0.10.3/chess.js";
   const SF = "https://cdn.jsdelivr.net/npm/stockfish.js@10.0.0/stockfish.js";
+  // cburnett piece set (the classic lichess/chess.com "wikipedia" style), served
+  // from jsdelivr's GitHub mirror of lichess. Verified all 12 codes return 200.
+  // codes are {color}{TYPE}, e.g. wK, bP. type letters from chess.js are p/n/b/r/q/k.
+  const PIECES = "https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett";
+  const pieceUrl = (cell) => `${PIECES}/${cell.color}${cell.type.toUpperCase()}.svg`;
 
   function loadScript(url) {
     return new Promise((res, rej) => {
@@ -69,23 +74,92 @@
           if (last && (last.from === name || last.to === name)) cls += " last";
           if (sel) { const ms = game.moves({ square: sel, verbose: true });
             if (ms.some((m) => m.to === name)) cls += (cell ? " cap" : " mv"); }
-          const pc = cell ? `<span class="cg-pc ${cell.color}">${GLYPH[cell.type]}</span>` : "";
-          h += `<div class="${cls}" data-sq="${name}">${pc}</div>`;
+          // piece graphic from CDN; on load error swap to a unicode glyph so a
+          // square is never empty when offline / the image 404s.
+          const pc = cell
+            ? `<img class="cg-pc" alt="${cell.color}${cell.type}" draggable="false" src="${pieceUrl(cell)}"
+                 onerror="this.outerHTML='&lt;span class=&quot;cg-pc cg-glyph ${cell.color}&quot;&gt;${GLYPH[cell.type]}&lt;/span&gt;'">`
+            : "";
+          // chess.com-style edge coordinates: files on the bottom row, ranks on the left col
+          let coord = "";
+          if (c === 0) coord += `<span class="cg-coord rank">${8 - rr}</span>`;
+          if (r === 7) coord += `<span class="cg-coord file">${"abcdefgh"[cc]}</span>`;
+          h += `<div class="${cls}" data-sq="${name}">${coord}${pc}</div>`;
         }
         boardEl.innerHTML = h;
-        boardEl.querySelectorAll(".cg-sq").forEach((el) => el.addEventListener("click", () => onClick(el.dataset.sq)));
+        boardEl.querySelectorAll(".cg-sq").forEach((el) => {
+          el.addEventListener("click", () => onClick(el.dataset.sq));
+          el.addEventListener("pointerdown", (e) => onPointerDown(e, el));
+        });
+      }
+
+      // attempt a human move; returns true if it was legal
+      function tryMove(from, to) {
+        if (busy || game.game_over() || game.turn() !== "w" || from === to) return false;
+        const mv = game.move({ from, to, promotion: "q" });
+        if (!mv) return false;
+        last = { from: mv.from, to: mv.to }; sel = null; render(); afterHuman(); return true;
       }
 
       function onClick(name) {
+        if (justDragged) { justDragged = false; return; } // the drag already handled this square
+        if (dragging) return;
         if (busy || game.game_over() || game.turn() !== "w") return;
-        if (sel) {
-          const mv = game.move({ from: sel, to: name, promotion: "q" });
-          sel = null;
-          if (mv) { last = { from: mv.from, to: mv.to }; render(); afterHuman(); return; }
-        }
+        if (sel && tryMove(sel, name)) return;
         const moves = game.moves({ square: name, verbose: true });
         sel = moves.length ? name : null;
         render();
+      }
+
+      // ---- drag & drop ----
+      let dragging = null, justDragged = false;
+      function onPointerDown(e, el) {
+        if (busy || game.game_over() || game.turn() !== "w") return;
+        const from = el.dataset.sq, piece = game.get(from);
+        if (!piece || piece.color !== "w") return;          // only drag your own pieces
+        e.preventDefault();
+        sel = from;                                          // show legal-move dots
+        render();
+        const img = boardEl.querySelector(`.cg-sq[data-sq="${from}"] .cg-pc`);
+        const rect = (img || el).getBoundingClientRect();
+        const ghost = (img ? img.cloneNode(true) : document.createElement("div"));
+        ghost.className = "cg-drag";
+        ghost.style.width = rect.width + "px"; ghost.style.height = rect.height + "px";
+        document.body.appendChild(ghost);
+        if (img) img.style.visibility = "hidden";
+        dragging = { from, ghost, fromEl: el, img };
+        moveGhost(e.clientX, e.clientY);
+        window.addEventListener("pointermove", onPointerMove);
+        window.addEventListener("pointerup", onPointerUp, { once: true });
+      }
+      function moveGhost(x, y) {
+        const g = dragging.ghost;
+        g.style.left = x + "px"; g.style.top = y + "px";
+      }
+      function squareAt(x, y) {
+        const el = document.elementFromPoint(x, y);
+        const sq = el && el.closest && el.closest(".cg-sq");
+        return sq ? sq.dataset.sq : null;
+      }
+      function onPointerMove(e) {
+        if (!dragging) return;
+        moveGhost(e.clientX, e.clientY);
+        // hover highlight
+        const over = squareAt(e.clientX, e.clientY);
+        boardEl.querySelectorAll(".cg-sq.hover").forEach((s) => s.classList.remove("hover"));
+        if (over) { const s = boardEl.querySelector(`.cg-sq[data-sq="${over}"]`); if (s) s.classList.add("hover"); }
+      }
+      function onPointerUp(e) {
+        if (!dragging) return;
+        const to = squareAt(e.clientX, e.clientY), from = dragging.from;
+        dragging.ghost.remove();
+        if (dragging.img) dragging.img.style.visibility = "";
+        const d = dragging; dragging = null;
+        window.removeEventListener("pointermove", onPointerMove);
+        boardEl.querySelectorAll(".cg-sq.hover").forEach((s) => s.classList.remove("hover"));
+        justDragged = true; // suppress the click that fires right after pointerup
+        if (to && to !== from) { if (!tryMove(from, to)) render(); }
+        else render();
       }
       function afterHuman() { if (checkEnd()) return; setStatus("thinking…"); busy = true; setTimeout(aiMove, 150); }
 

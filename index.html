@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Abdulrhman — ML & Systems Engineer</title>
+<title>Abdulrhman — ML &amp; Systems Engineer</title>
 <meta name="description" content="Abdulrhman — ML & systems engineer. Recommendation, forecasting and computer vision in production, and a C++ chess engine that plays live on Lichess." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,29 +13,51 @@
 <body>
 <div class="grain" aria-hidden="true"></div>
 
-<div class="page">
+<!-- fixed top bar -->
+<header class="topbar">
+  <a href="#top" class="topbar-name">Abdulrhman</a>
+  <span class="topbar-edition">Machine Learning &amp; Backend Engineer</span>
+</header>
 
-  <!-- masthead bar -->
-  <header class="masthead reveal">
-    <span>ABDULRHMAN</span>
-    <span>PORTFOLIO — EDITION 2026</span>
-  </header>
+<!-- chapter rail (right-side, lit by the active world) -->
+<nav class="rail" aria-label="sections">
+  <a href="#top" data-label="Home"><span></span></a>
+  <a href="#about" data-label="About"><span></span></a>
+  <a href="#featured" data-label="Censor"><span></span></a>
+  <a href="#work" data-label="Work"><span></span></a>
+  <a href="#play" data-label="Chess"><span></span></a>
+  <a href="#contact" data-label="Contact"><span></span></a>
+</nav>
 
-  <!-- HERO -->
-  <section class="hero" id="top">
-    <div class="hero-main">
-      <h1 class="name reveal">Abdulrhman</h1>
-      <p class="role reveal">Machine learning &amp; systems engineer</p>
-      <p class="lede reveal">I build <span class="accent">real-time ML and backend systems</span> and take them to production — recommendation, computer vision, and live audio. Day job at a q-commerce grocery platform.</p>
+<main>
 
-      <div class="term-block reveal">
-        <div class="term-cap">~/abdulrhman — try <code>help</code></div>
+  <!-- ============ HERO ============ -->
+  <section class="world hero" id="top" data-world="hero" data-screen-label="Hero">
+    <div class="spread hero-grid">
+      <p class="kicker" data-anim="fade" style="--i:0">Machine-learning &amp; backend engineer · Jeddah, KSA</p>
+      <h1 class="name" data-anim="lines"><span class="line"><span>Abdulrhman</span></span></h1>
+      <div class="hero-lede" data-anim="fade" style="--i:2">
+        <p class="lede">I build <span class="accent">machine-learning systems end to end</span> — the model, and the backend that serves it under real traffic.</p>
+        <p class="lede-sub">Recommendation, forecasting, and computer vision in production — plus a C++ chess engine and a real-time audio censor I built to push further.</p>
+      </div>
+
+      <aside class="hero-meta" data-anim="fade" style="--i:3">
+        <dl>
+          <div><dt>Now</dt><dd>Production ML &amp; backend</dd></div>
+          <div><dt>Based</dt><dd>Jeddah, Saudi Arabia</dd></div>
+          <div><dt>Open to</dt><dd>ML / backend roles</dd></div>
+          <div><dt>Index</dt><dd><a href="#about" class="link">About</a> · <a href="#work" class="link">Work</a> · <a href="#play" class="link">Chess</a> · <a href="#contact" class="link">Contact</a></dd></div>
+        </dl>
+      </aside>
+
+      <div class="term-block" data-anim="panel" style="--i:1">
+        <div class="term-cap">~/abdulrhman</div>
         <div class="term-window" id="term-window">
-          <div class="term-chrome"><span></span><span></span><span></span></div>
+          <div class="term-chrome"><span></span><span></span><span></span><em class="term-title">abdulrhman@web: ~</em></div>
           <div class="term" id="term" tabindex="0">
             <div id="output"></div>
             <div class="inputline" id="inputline">
-              <span class="ps1">$</span>
+              <span class="ps1" id="ps1"></span>
               <span class="cmd-wrap"><span id="typed"></span><span class="caret" id="caret"></span><span id="ghost"></span></span>
               <input id="hidden" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="terminal input" />
             </div>
@@ -43,70 +65,88 @@
         </div>
       </div>
     </div>
+    <a href="#about" class="scrollcue" aria-label="scroll"><span></span></a>
+  </section>
 
-    <aside class="colophon reveal reveal--left">
-      <dl>
-        <dt>Currently</dt><dd>ML Engineer @ QEU</dd>
-        <dt>Focus</dt><dd>real-time ML, systems</dd>
-        <dt>Based in</dt><dd>Jeddah, KSA</dd>
-        <dt>Index</dt><dd><a href="#about">01 About</a> · <a href="#work">02 Work</a> · <a href="#contact">03 Contact</a></dd>
-      </dl>
-      <div class="links">
-        <a href="https://github.com/abodefy43-spec" target="_blank" rel="noopener" class="link">GitHub</a>
-        <a href="https://lichess.org/@/Akera_bot" target="_blank" rel="noopener" class="link">Lichess</a>
-        <a href="mailto:abodefy43@gmail.com" class="link">Email</a>
+  <!-- ============ ABOUT ============ -->
+  <section class="world sec" id="about" data-world="study" data-screen-label="About">
+    <div class="spread">
+      <div class="band" data-anim="band"><span class="band-no">01</span><span class="band-label">About</span><span class="band-rule"></span></div>
+      <div class="sec-grid">
+        <div class="prose" data-anim="rise">
+          <p>I'm a machine-learning engineer who likes the parts that don't fit in a notebook — turning a model into a service that holds up under real traffic, with the data pipeline and the API around it. Mostly that's recommendation and ranking, forecasting, and computer vision.</p>
+          <p>I'd rather ship an honest number than a flattering one, and I care more about an architecture that survives production than a demo that looks good on a slide. The side projects — a chess engine, an AR app, a real-time audio censor — are where I get to push harder.</p>
+        </div>
+        <div class="skills" id="skills"></div>
       </div>
-    </aside>
-  </section>
-
-  <!-- ABOUT -->
-  <section class="sec" id="about">
-    <div class="sec-head reveal"><span class="ghost-no">01</span><span class="sec-label">About</span></div>
-    <div class="prose reveal">
-      <p>I'm an ML engineer. I work on machine-learning and backend systems and take them all the way to production — recommendation, forecasting, computer vision, and real-time audio. Day job is at <strong>QEU</strong>, a q-commerce grocery platform; the rest I build because I like building.</p>
-      <p>I care about honest numbers over flattering ones, and about getting the architecture right so things hold up once they leave my screen.</p>
-      <div class="skills" id="skills"></div>
     </div>
   </section>
 
-  <!-- FEATURED project -->
-  <section class="sec" id="featured">
-    <div class="sec-head reveal"><span class="ghost-no">02</span><span class="sec-label">Featured</span></div>
-    <div class="feature reveal" id="feature"></div>
-  </section>
-
-  <!-- WORK index -->
-  <section class="sec" id="work">
-    <div class="sec-head reveal"><span class="ghost-no">03</span><span class="sec-label">Work &amp; experience</span></div>
-    <div class="xp reveal" id="xp"></div>
-    <ol class="index" id="index"></ol>
-  </section>
-
-  <!-- PLAY: chess -->
-  <section class="sec" id="play">
-    <div class="sec-head reveal"><span class="ghost-no">04</span><span class="sec-label">Play me</span></div>
-    <p class="prose reveal">I wrote a chess engine in C++. Here's a quick game in the browser — full rules, you're white. The real engine plays stronger on <a href="https://lichess.org/@/Akera_bot" target="_blank" rel="noopener" class="link">Lichess</a>.</p>
-    <div class="chess-panel reveal" id="chess-mount"></div>
-  </section>
-
-  <!-- CONTACT -->
-  <section class="sec" id="contact">
-    <div class="sec-head reveal"><span class="ghost-no">05</span><span class="sec-label">Contact</span></div>
-    <p class="contact-line reveal">Open to roles, freelance, and interesting problems.
-      <a href="mailto:abodefy43@gmail.com" class="link accent" id="mail-magnet">abodefy43@gmail.com</a></p>
-    <div class="contact-links reveal">
-      <a href="https://github.com/abodefy43-spec" target="_blank" rel="noopener" class="link">GitHub ↗</a>
-      <a href="https://lichess.org/@/Akera_bot" target="_blank" rel="noopener" class="link">Lichess ↗</a>
+  <!-- ============ FEATURED — Audio Censor ============ -->
+  <section class="world sec" id="featured" data-world="studio" data-screen-label="Featured — Audio Censor">
+    <div class="spread">
+      <div class="band" data-anim="band"><span class="band-no">02</span><span class="band-label">Featured</span><span class="band-rule"></span></div>
+      <div class="feature" id="feature">
+        <div class="feat-copy" id="feat-copy" data-anim="rise"></div>
+        <div class="mic" id="mic" data-anim="panel">
+          <span class="mic-badge">● Live demo — interactive</span>
+          <p class="mic-cue">Try it yourself — hit record and curse.</p>
+          <div class="mic-head">
+            <button class="mic-btn big" id="mic-btn"><span class="mic-ico"></span>Record</button>
+            <span class="mic-state" id="mic-state">tap to start</span>
+          </div>
+          <canvas class="mic-wave" id="mic-wave" aria-hidden="true"></canvas>
+          <div class="mic-flash" id="mic-flash">say something with a banned word — it gets bleeped here</div>
+          <div class="mic-tlabel">Transcript</div>
+          <div class="mic-script" id="mic-script"></div>
+          <p class="mic-note" id="mic-note"></p>
+        </div>
+      </div>
     </div>
   </section>
 
-  <footer class="colofoot">BUILT BY HAND — 2026 · NO TEMPLATE</footer>
+  <!-- ============ WORK ============ -->
+  <section class="world sec" id="work" data-world="lab" data-screen-label="Work">
+    <canvas class="dotfield" id="dotfield" aria-hidden="true"></canvas>
+    <div class="spread">
+      <div class="band" data-anim="band"><span class="band-no">03</span><span class="band-label">Work &amp; experience</span><span class="band-rule"></span></div>
+      <div class="xp" id="xp" data-anim="rise"></div>
+      <ol class="index" id="index"></ol>
+    </div>
+  </section>
 
-</div>
+  <!-- ============ PLAY — chess ============ -->
+  <section class="world sec" id="play" data-world="board" data-screen-label="Chess">
+    <div class="spread">
+      <div class="band" data-anim="band"><span class="band-no">04</span><span class="band-label">Play me</span><span class="band-rule"></span></div>
+      <div class="play-grid">
+        <p class="prose play-intro" data-anim="rise">My engine, <span class="accent">Ripper</span>, is C++ from the ground up. This is a lighter browser cousin — full rules, you play White. The real one runs live on <a href="https://lichess.org/@/Akera_bot" target="_blank" rel="noopener" class="link">Lichess</a>.</p>
+        <div class="chess-panel" id="chess-mount" data-anim="board"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section class="world sec contact" id="contact" data-world="signoff" data-screen-label="Contact">
+    <div class="spread">
+      <div class="band" data-anim="band"><span class="band-no">05</span><span class="band-label">Contact</span><span class="band-rule"></span></div>
+      <p class="contact-line" data-anim="rise">Open to the right ML or backend role — and always up for a problem worth the time.</p>
+      <a href="mailto:abodefy43@gmail.com" class="contact-mail" id="mail-magnet" data-decode="abodefy43@gmail.com" data-anim="rise">abodefy43@gmail.com</a>
+      <div class="contact-links" data-anim="rise">
+        <a href="https://github.com/abodefy43-spec" target="_blank" rel="noopener" class="link">GitHub ↗</a>
+        <a href="https://lichess.org/@/Akera_bot" target="_blank" rel="noopener" class="link">Lichess ↗</a>
+      </div>
+      <footer class="colofoot">Built by hand — 2026 · No template</footer>
+    </div>
+  </section>
+
+</main>
 
 <script src="js/data.js"></script>
 <script src="js/chessgame.js"></script>
 <script src="js/main.js"></script>
 <script src="js/term.js"></script>
+<script src="js/mic.js"></script>
+<script src="js/worlds.js"></script>
 </body>
 </html>
